@@ -1,0 +1,111 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Stargazer Geo Domes</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--teal:#2CC2D3;--deep:#0E6F7A;--ink:#1F2A30;--mut:#6B7780;--cream:#FAF7F2;--gray:#EEF1F2;--line:#E3E8EA}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-weight:700;letter-spacing:-.02em}
+header{background:linear-gradient(135deg,var(--teal),var(--deep));color:#fff;padding:36px 20px 64px;text-align:left}
+header h1{margin:0;font-size:1.75rem;max-width:900px;margin:auto}header p{margin:6px auto 0;max-width:900px;opacity:.9;font-size:.8rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+main{max-width:900px;margin:-44px auto 0;padding:0 16px 40px}
+.card,details{background:#fff;border:0;border-radius:20px;padding:20px;margin:16px 0;box-shadow:0 1px 2px rgba(16,40,50,.04),0 8px 24px rgba(16,40,50,.06)}
+details{padding:0;overflow:hidden}
+.card h2{font-size:1.15rem}
+.sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.sum div{background:var(--gray);padding:14px;border-radius:14px;font-size:.75rem;color:var(--mut);font-weight:500}.sum b{display:block;font-size:1.25rem;font-weight:700;color:var(--ink);margin-top:4px}
+.bar{height:10px;background:var(--gray);border-radius:99px;overflow:hidden;margin-top:16px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--deep));border-radius:99px;transition:width .4s}
+summary{cursor:pointer;list-style:none;padding:18px 20px;font-size:1.05rem;font-weight:600;display:flex;flex-direction:column;gap:4px}summary::-webkit-details-marker{display:none}
+summary small{font-size:.75rem;font-weight:500;color:var(--deep)}
+.item{border-top:1px solid var(--line);padding:14px 20px}.item .n{font-weight:600;font-size:.95rem}.item .s{font-size:.8rem;color:var(--mut);margin-top:2px}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;align-items:center;font-size:.85rem;color:var(--mut)}
+select,input{font:inherit;padding:8px 12px;border:1px solid var(--line);border-radius:12px;background:var(--gray);color:var(--ink)}input:focus,select:focus{outline:2px solid var(--teal);background:#fff}
+input[type=number]{width:110px}input[type=checkbox]{accent-color:var(--deep);width:18px;height:18px;vertical-align:middle}
+select[data-k=st]{border-radius:99px;font-weight:600;font-size:.8rem;border:0;padding:7px 14px}
+.tag{font-size:.7rem;font-weight:600;padding:3px 9px;border-radius:99px;background:#E0F6F9;color:var(--deep);white-space:nowrap}.tag.q{background:#FFF1DE;color:#9A5B00}
+.st-toresearch select[data-k=st]{background:var(--gray);color:var(--mut)}.st-quoted select[data-k=st]{background:#FFF1DE;color:#9A5B00}
+.st-ordered select[data-k=st]{background:#E0F6F9;color:var(--deep)}.st-received select[data-k=st]{background:var(--deep);color:#fff}
+.st-received .n{text-decoration:line-through;opacity:.5}
+button{font:inherit;font-weight:600;background:var(--deep);color:#fff;border:0;padding:10px 18px;border-radius:99px;cursor:pointer;margin:4px 4px 0 0}button.alt{background:var(--gray);color:var(--ink)}
+.deal{border-top:1px solid var(--line);padding:12px 0}.deal a{color:var(--deep);font-weight:600}
+.note{font-size:.8rem;color:var(--mut);padding:0 20px 12px}label{font-size:.85rem}
+.ihead{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.iact{display:flex;gap:6px;flex-shrink:0}.ib{background:var(--gray);color:var(--deep);padding:6px 12px;font-size:.75rem;margin:0}
+a.shop{display:inline-block;background:var(--teal);color:#fff;text-decoration:none;font-weight:600;font-size:.75rem;padding:7px 14px;border-radius:99px}
+.fab{position:fixed;right:18px;bottom:18px;box-shadow:0 8px 24px rgba(14,111,122,.35);padding:14px 22px;z-index:5}
+dialog{border:0;border-radius:24px;padding:22px;width:min(520px,94vw);box-shadow:0 20px 60px rgba(0,0,0,.25)}dialog::backdrop{background:rgba(20,40,50,.4)}
+.f{display:grid;gap:12px}.f label{display:grid;gap:4px;font-weight:500;color:var(--ink)}.f input,.f select,.f textarea{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--gray)}
+.f .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dgrid{display:grid;gap:10px}.dcard{display:block;text-decoration:none;color:var(--ink);background:var(--gray);border-radius:16px;padding:14px;transition:transform .15s}.dcard:active{transform:scale(.98)}
+.dcard .p{font-size:1.2rem;font-weight:700;color:var(--deep)}.dcard s{color:var(--mut);font-size:.85rem;margin-left:6px}.dcard .st{font-size:.75rem;color:var(--mut)}.dcard .go{float:right;font-size:.75rem;font-weight:600;color:var(--deep)}
+.empty{color:var(--mut);font-size:.9rem;padding:8px 0}
+</style></head><body>
+<header><h1>Stargazer Geo Domes</h1><p>Trifecta × Stargazer · Joe Rich, BC <span id="live" style="margin-left:8px"></span></p></header>
+<main>
+<div class="card"><h2 style="margin-top:0;display:flex;justify-content:space-between;align-items:center">Budget <span id="sync" class="tag">Connecting…</span></h2>
+<div class="row"><label>Domes in scope <select id="scope"><option value="2">Both domes</option><option value="1">One dome</option></select></label>
+<label>Budget target (CAD) <input type="number" id="target" style="width:130px"></label>
+<label><input type="checkbox" id="incOpt"> include optional kitchenette</label></div>
+<div class="sum" style="margin-top:12px" id="sum"></div><div class="bar"><i id="bar"></i></div><div class="s" id="barlbl" style="font-size:.8rem;margin-top:4px"></div></div>
+<div class="card" id="deals"><h2 style="margin-top:0">Today's deals</h2><div id="dl">Loading…</div></div>
+<div id="sections"></div>
+<div class="card"><h3 style="margin-top:0">Save & share</h3><p class="s" style="font-size:.85rem">Everything syncs live to the shared database, so Rob and Danielle see the same list. This device keeps an offline copy. Export saves a backup file; Import restores one for everyone.</p>
+<button id="exp">Export JSON</button> <button class="alt" id="impb">Import JSON</button> <button class="alt" id="reset">Clear offline cache</button><input type="file" id="imp" accept=".json" hidden></div>
+</main>
+<button class="fab" id="add">+ Add item</button>
+<dialog id="dlg"><form method="dialog" class="f" id="frm"><h2 style="margin:0" id="dt">Item</h2>
+<label>Name<input name="name" required></label><label>Section<select name="sec" id="secsel"></select></label>
+<div class="two"><label>Qty one dome<input name="q1" type="number" min="0"></label><label>Qty both domes<input name="q2" type="number" min="0"></label></div>
+<label>Estimated cost each (CAD, blank = quote)<input name="unit" type="number" step="0.01"></label>
+<label>Link (View / shop)<input name="link" type="url" placeholder="https://"></label><label>Notes / specs<textarea name="spec" rows="3"></textarea></label>
+<div><button value="save">Save</button> <button class="alt" value="cancel" formnovalidate>Cancel</button> <button class="alt" id="del" value="del" formnovalidate style="color:#B3261E">Delete</button></div></form></dialog>
+<script src="data.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// Public (publishable/anon) key only. Never put a service-role key here.
+const SB_URL="https://zpcqklhuctrhaiqtyagi.supabase.co",SB_KEY="sb_publishable_YE6v89MMe3crx2s9Kmgzrw_L4NThfLG";
+const sb=supabase.createClient(SB_URL,SB_KEY);
+const KEY="stargazer-cache-v2",$=id=>document.getElementById(id),money=v=>"$"+(+v).toLocaleString("en-CA",{minimumFractionDigits:2,maximumFractionDigits:2}),esc=t=>String(t??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let C=JSON.parse(localStorage.getItem(KEY)||"null")||{items:[],settings:{budget_target:null,dome_mode:2,include_kitchenette:true},deals:[]};
+const cache=()=>localStorage.setItem(KEY,JSON.stringify(C));
+const ST=["to research","quoted","ordered","received"],nn=v=>v!=null&&v!=="";
+const qty=it=>C.settings.dome_mode==2?it.qty_both:it.qty_one;
+const est=(it,o=true)=>(o&&nn(it.est_override))?+it.est_override:(nn(it.unit_cost)?it.unit_cost*qty(it):null);
+function status(t,ok){$("sync").textContent=t;$("sync").style.background=ok?"#E0F6F9":"#FFF1DE";$("sync").style.color=ok?"#0E6F7A":"#9A5B00"}
+async function upd(id,patch){const it=C.items.find(x=>x.id==id);Object.assign(it,patch);cache();totals();const {error}=await sb.from("items").update({...patch,updated_at:new Date().toISOString()}).eq("id",id);error?status("Offline — not saved",0):status("Synced",1)}
+async function setS(patch){Object.assign(C.settings,patch);cache();totals();const {error}=await sb.from("settings").update(patch).eq("id",1);error?status("Offline — not saved",0):status("Synced",1)}
+function render(){const S=C.settings;$("scope").value=S.dome_mode;$("target").value=S.budget_target??"";$("incOpt").checked=S.include_kitchenette;
+const open=[...document.querySelectorAll("details[open]")].map(d=>d.dataset.s);const L=[...C.items].sort((a,b)=>(a.sort??0)-(b.sort??0));
+$("sections").innerHTML=SEED.map(sec=>{const items=L.filter(x=>x.section==sec.id);return `<details data-s="${sec.id}" ${(open.length?open.includes(sec.id):sec.id=="tim")?"open":""}><summary><span>${sec.name}</span><small id="t-${sec.id}"></small></summary>${sec.note?`<div class="note">${sec.note}</div>`:""}`+
+items.map(it=>{const id=esc(it.id);return `<div class="item st-${ST[it.status].replace(" ","")}"><div class="ihead"><div class="n">${esc(it.name)} <span class="tag">× ${qty(it)}</span>${it.alternative?' <span class="tag">alternative</span>':""}${!sec.checklistOnly&&!nn(it.unit_cost)&&!nn(it.est_override)?' <span class="tag q">quote required</span>':""}${it.currency_unverified?' <span class="tag">currency unverified</span>':""}</div>
+<div class="iact"><button class="ib" data-edit="${id}">Edit</button></div></div>
+<div class="s">${esc(it.notes)}${nn(it.unit_cost)?` · ref ${money(it.unit_cost)} each`:""}</div><div class="row"><select data-id="${id}" data-k="status">${ST.map((s,k)=>`<option value="${k}" ${k==it.status?"selected":""}>${s}</option>`).join("")}</select>
+${it.link?`<a class="shop" href="${esc(it.link)}" target="_blank" rel="noopener">View / shop ↗</a>`:""}
+${sec.checklistOnly?"":`<label>Est <input type="number" step="0.01" data-id="${id}" data-k="est_override" placeholder="${est(it,false)??"quote"}" value="${it.est_override??""}"></label><label>Actual <input type="number" step="0.01" data-id="${id}" data-k="actual" value="${it.actual??""}"></label>`}</div></div>`}).join("")+(items.length?"":`<div class="note">No items.</div>`)+`</details>`}).join("");
+document.querySelectorAll("[data-k]").forEach(e=>e.onchange=()=>{const k=e.dataset.k,v=k=="status"?+e.value:(e.value===""?null:+e.value);if(k=="status")e.closest(".item").className="item st-"+ST[v].replace(" ","");upd(e.dataset.id,{[k]:v})});
+document.querySelectorAll("[data-edit]").forEach(e=>e.onclick=()=>openForm(e.dataset.edit));totals();renderDeals()}
+function totals(){let E=0,A=0,U=0,D=0,N=0;const S=C.settings;SEED.forEach(sec=>{let e=0,a=0,u=0,d=0,n=0;C.items.filter(x=>x.section==sec.id).forEach(it=>{a+=+(it.actual||0);if(it.alternative)return;n++;if(it.status==3)d++;if(sec.checklistOnly)return;const v=est(it);v==null?u++:e+=v});
+const t=$("t-"+sec.id);if(t)t.textContent=`${d}/${n} done`+(sec.checklistOnly?"":` · est ${money(e)}${u?` +${u} to quote`:""} · actual ${money(a)}`);
+if(!sec.optional||S.include_kitchenette){E+=e;A+=a;U+=u}D+=d;N+=n});
+const t=+S.budget_target||0;$("sum").innerHTML=`<div>Estimated<b>${money(E)}</b></div><div>Actual spent<b>${money(A)}</b></div><div>Items to quote<b>${U}</b></div><div>Target<b>${t?money(t):"—"}</b></div><div>Remaining<b>${t?money(t-A):"—"}</b></div><div>Received<b>${D}/${N}</b></div>`;
+$("bar").style.width=t?Math.min(100,A/t*100)+"%":"0";$("barlbl").textContent=t?`${(A/t*100).toFixed(1)}% of target spent · estimate is ${(E/t*100).toFixed(0)}% of target (excl. items to quote)`:"Set a target to track progress."}
+function renderDeals(){const L=C.deals||[];$("dl").innerHTML=L.length?`<div class="dgrid">${L.map(x=>`<a class="dcard" href="${esc(x.url)}" target="_blank" rel="noopener"><span class="go">Shop ↗</span><div class="n" style="font-weight:600">${esc(x.item)}</div><div class="st">${esc(x.store)}${x.date?" · "+esc(x.date):""}</div><div style="margin-top:6px">${nn(x.price)?`<span class="p">${money(x.price)}</span>`:""}${nn(x.was)?`<s>${money(x.was)}</s>`:""}</div>${x.note?`<div class="st" style="margin-top:4px">${esc(x.note)}</div>`:""}</a>`).join("")}</div>`:`<div class="empty">No deals yet. Daily finds will appear here.</div>`}
+let editing=null;$("secsel").innerHTML=SEED.map(s=>`<option value="${s.id}">${s.name}</option>`).join("");
+const FM={name:"name",sec:"section",q1:"qty_one",q2:"qty_both",unit:"unit_cost",link:"link",spec:"notes"};
+function openForm(id){editing=id;const it=C.items.find(x=>x.id==id)||{section:"tim",qty_one:1,qty_both:2},f=$("frm");$("dt").textContent=id?"Edit item":"Add item";$("del").style.display=id?"":"none";
+Object.entries(FM).forEach(([k,c])=>f[k].value=it[c]??"");$("dlg").showModal()}
+$("add").onclick=()=>openForm(null);
+$("dlg").addEventListener("close",async()=>{const f=$("frm"),v=$("dlg").returnValue;let r;
+if(v=="del"&&editing){if(!confirm("Delete this item?"))return;C.items=C.items.filter(x=>x.id!=editing);r=await sb.from("items").delete().eq("id",editing)}
+else if(v=="save"&&f.name.value.trim()){const d={name:f.name.value.trim(),section:f.sec.value,qty_one:+f.q1.value||0,qty_both:+f.q2.value||0,unit_cost:f.unit.value===""?null:+f.unit.value,link:f.link.value.trim(),notes:f.spec.value};
+if(editing){Object.assign(C.items.find(x=>x.id==editing),d);r=await sb.from("items").update(d).eq("id",editing)}else{const n={id:"c"+Date.now(),sort:9999,status:0,currency_unverified:false,alternative:false,...d};C.items.push(n);r=await sb.from("items").insert(n)}}else return;
+r.error?status("Offline — not saved",0):status("Synced",1);cache();render()});
+$("scope").onchange=e=>{setS({dome_mode:+e.target.value});render()};$("target").onchange=e=>setS({budget_target:e.target.value===""?null:+e.target.value});$("incOpt").onchange=e=>setS({include_kitchenette:e.target.checked});
+$("exp").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(C,null,1)],{type:"application/json"}));a.download="stargazer-backup.json";a.click()};
+$("impb").onclick=()=>$("imp").click();$("imp").onchange=e=>e.target.files[0].text().then(async t=>{const d=JSON.parse(t);if(!d.items||!confirm("Overwrite the shared list with this backup for everyone?"))return;const {error}=await sb.from("items").upsert(d.items.map(({kitchenette,quote_required,...x})=>x));if(d.settings)await sb.from("settings").update({budget_target:d.settings.budget_target,dome_mode:d.settings.dome_mode,include_kitchenette:d.settings.include_kitchenette}).eq("id",1);error?alert("Import failed: "+error.message):load()});
+$("reset").onclick=()=>{if(confirm("Clear this device's offline cache? (Shared data is not affected.)")){localStorage.removeItem(KEY);location.reload()}};
+async function load(){const [i,s,d]=await Promise.all([sb.from("items").select("*"),sb.from("settings").select("*").eq("id",1).single(),sb.from("deals").select("*").order("date",{ascending:false})]);
+if(i.error){status("Offline — showing cached copy",0);return render()}C={items:i.data,settings:s.data||C.settings,deals:d.data||[]};cache();status("Synced",1);render()}
+let t0;const soon=()=>{clearTimeout(t0);t0=setTimeout(()=>{if(!document.querySelector("dialog[open]")&&!document.activeElement.matches("input,textarea"))load();else soon()},300)};
+sb.channel("live").on("postgres_changes",{event:"*",schema:"public"},soon).subscribe(st=>{if(st=="SUBSCRIBED")$("live").textContent="● Live"});
+render();load();
+</script></body></html>
