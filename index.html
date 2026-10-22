@@ -21,6 +21,7 @@ summary small{font-size:.75rem;font-weight:500;color:var(--deep)}
 select,input{font:inherit;padding:8px 12px;border:1px solid var(--line);border-radius:12px;background:var(--gray);color:var(--ink)}input:focus,select:focus{outline:2px solid var(--teal);background:#fff}
 input[type=number]{width:110px}input[type=checkbox]{accent-color:var(--deep);width:18px;height:18px;vertical-align:middle}
 select[data-k=st]{border-radius:99px;font-weight:600;font-size:.8rem;border:0;padding:7px 14px}
+.rc{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}.rcp{position:relative;display:inline-flex}.rcp a{display:flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:var(--cream);color:var(--deep);font-size:.7rem;font-weight:700;text-decoration:none}.rcp img{width:100%;height:100%;object-fit:cover}.rcp button{position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:99px;border:0;background:var(--ink);color:#fff;font-size:.7rem;line-height:20px;padding:0;cursor:pointer}.addr{border:1px dashed var(--teal);background:#fff;color:var(--deep);font:inherit;font-size:.75rem;font-weight:600;padding:7px 14px;border-radius:99px;cursor:pointer}
 .tag{font-size:.7rem;font-weight:600;padding:3px 9px;border-radius:99px;background:#E0F6F9;color:var(--deep);white-space:nowrap}.tag.q{background:#FFF1DE;color:#9A5B00}
 .st-toresearch select[data-k=st]{background:var(--gray);color:var(--mut)}.st-quoted select[data-k=st]{background:#FFF1DE;color:#9A5B00}
 .st-ordered select[data-k=st]{background:#E0F6F9;color:var(--deep)}.st-received select[data-k=st]{background:var(--deep);color:#fff}
@@ -52,6 +53,7 @@ dialog{border:0;border-radius:24px;padding:22px;width:min(520px,94vw);box-shadow
 <button id="exp">Export JSON</button> <button class="alt" id="impb">Import JSON</button> <button class="alt" id="reset">Clear offline cache</button><input type="file" id="imp" accept=".json" hidden></div>
 </main>
 <button class="fab" id="add">+ Add item</button>
+<input type="file" id="rfile" accept="image/*,application/pdf" style="display:none">
 <dialog id="dlg"><form method="dialog" class="f" id="frm"><h2 style="margin:0" id="dt">Item</h2>
 <label>Name<input name="name" required></label><label>Section<select name="sec" id="secsel"></select></label>
 <div class="two"><label>Qty one dome<input name="q1" type="number" min="0"></label><label>Qty both domes<input name="q2" type="number" min="0"></label></div>
@@ -79,8 +81,10 @@ $("sections").innerHTML=SEED.map(sec=>{const items=L.filter(x=>x.section==sec.id
 items.map(it=>{const id=esc(it.id);return `<div class="item st-${ST[it.status].replace(" ","")}"><div class="ihead"><div class="n">${esc(it.name)} <span class="tag">× ${qty(it)}</span>${it.alternative?' <span class="tag">alternative</span>':""}${!sec.checklistOnly&&!nn(it.unit_cost)&&!nn(it.est_override)?' <span class="tag q">quote required</span>':""}${it.currency_unverified?' <span class="tag">currency unverified</span>':""}</div>
 <div class="iact"><button class="ib" data-edit="${id}">Edit</button></div></div>
 <div class="s">${esc(it.notes)}${nn(it.unit_cost)?` · ref ${money(it.unit_cost)} each`:""}</div><div class="row"><select data-id="${id}" data-k="status">${ST.map((s,k)=>`<option value="${k}" ${k==it.status?"selected":""}>${s}</option>`).join("")}</select>
-${it.link?`<a class="shop" href="${esc(it.link)}" target="_blank" rel="noopener">View / shop ↗</a>`:""}
+${it.link?`<a class="shop" href="${esc(it.link)}" target="_blank" rel="noopener">View / shop ↗</a>`:""}<div class="rc">${(C.receipts||[]).filter(r=>r.item_id==it.id).map(r=>`<span class="rcp"><a href="${esc(r.url)}" target="_blank" rel="noopener" title="${esc(r.file_name)}">${/^image/.test(r.mime||"")?`<img loading="lazy" src="${esc(r.url)}" alt="receipt">`:"PDF"}</a><button data-rdel="${r.id}" title="Remove receipt">x</button></span>`).join("")}<button class="addr" data-radd="${id}">+ Add receipt</button></div>
 ${sec.checklistOnly?"":`<label>Est <input type="number" step="0.01" data-id="${id}" data-k="est_override" placeholder="${est(it,false)??"quote"}" value="${it.est_override??""}"></label><label>Actual <input type="number" step="0.01" data-id="${id}" data-k="actual" value="${it.actual??""}"></label>`}</div></div>`}).join("")+(items.length?"":`<div class="note">No items.</div>`)+`</details>`}).join("");
+document.querySelectorAll("[data-radd]").forEach(b=>b.onclick=()=>{rItem=b.dataset.radd;$("rfile").value="";$("rfile").click()});
+document.querySelectorAll("[data-rdel]").forEach(b=>b.onclick=()=>delReceipt(+b.dataset.rdel));
 document.querySelectorAll("[data-k]").forEach(e=>e.onchange=()=>{const k=e.dataset.k,v=k=="status"?+e.value:(e.value===""?null:+e.value);if(k=="status")e.closest(".item").className="item st-"+ST[v].replace(" ","");upd(e.dataset.id,{[k]:v})});
 document.querySelectorAll("[data-edit]").forEach(e=>e.onclick=()=>openForm(e.dataset.edit));totals();renderDeals()}
 function totals(){let E=0,A=0,U=0,D=0,N=0;const S=C.settings;SEED.forEach(sec=>{let e=0,a=0,u=0,d=0,n=0;C.items.filter(x=>x.section==sec.id).forEach(it=>{a+=+(it.actual||0);if(it.alternative)return;n++;if(it.status==3)d++;if(sec.checklistOnly)return;const v=est(it);v==null?u++:e+=v});
@@ -103,8 +107,20 @@ $("scope").onchange=e=>{setS({dome_mode:+e.target.value});render()};$("target").
 $("exp").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(C,null,1)],{type:"application/json"}));a.download="stargazer-backup.json";a.click()};
 $("impb").onclick=()=>$("imp").click();$("imp").onchange=e=>e.target.files[0].text().then(async t=>{const d=JSON.parse(t);if(!d.items||!confirm("Overwrite the shared list with this backup for everyone?"))return;const {error}=await sb.from("items").upsert(d.items.map(({kitchenette,quote_required,...x})=>x));if(d.settings)await sb.from("settings").update({budget_target:d.settings.budget_target,dome_mode:d.settings.dome_mode,include_kitchenette:d.settings.include_kitchenette}).eq("id",1);error?alert("Import failed: "+error.message):load()});
 $("reset").onclick=()=>{if(confirm("Clear this device's offline cache? (Shared data is not affected.)")){localStorage.removeItem(KEY);location.reload()}};
-async function load(){const [i,s,d]=await Promise.all([sb.from("items").select("*"),sb.from("settings").select("*").eq("id",1).single(),sb.from("deals").select("*").order("date",{ascending:false})]);
-if(i.error){status("Offline — showing cached copy",0);return render()}C={items:i.data,settings:s.data||C.settings,deals:d.data||[]};cache();status("Synced",1);render()}
+let rItem=null;
+$("rfile").onchange=async e=>{const f=e.target.files[0],id=rItem;if(!f||!id)return;if(f.size>10485760)return alert("That file is over 10 MB. Please use a smaller photo or PDF.");
+status("Uploading receipt...",1);const path=id+"/"+Date.now()+"-"+f.name.replace(/[^\w.\-]+/g,"_");const up=await sb.storage.from("receipts").upload(path,f,{contentType:f.type||"application/octet-stream"});
+if(up.error){status("Receipt upload failed",0);return alert("Upload failed: "+up.error.message)}
+const url=sb.storage.from("receipts").getPublicUrl(path).data.publicUrl,it=C.items.find(x=>x.id==id);
+const a=prompt("Receipt saved. Amount paid in total for this item (CAD)?",it.actual??"");const amt=a==null||a.trim()===""?null:+a.replace(/[^0-9.]/g,"");
+const ins=await sb.from("receipts").insert({item_id:id,path,url,file_name:f.name,mime:f.type,amount:amt}).select().single();
+if(ins.error){status("Receipt not linked",0);return alert("Could not link receipt: "+ins.error.message)}
+(C.receipts=C.receipts||[]).push(ins.data);const patch={};if(amt!=null&&!isNaN(amt))patch.actual=amt;if(it.status!=3)patch.status=3;
+if(Object.keys(patch).length)await upd(id,patch);else{cache();status("Synced",1)}render()};
+async function delReceipt(rid){const r=(C.receipts||[]).find(x=>x.id==rid);if(!r||!confirm("Remove this receipt?"))return;
+await sb.storage.from("receipts").remove([r.path]);const {error}=await sb.from("receipts").delete().eq("id",rid);if(error)return status("Not removed",0);C.receipts=C.receipts.filter(x=>x.id!=rid);cache();status("Synced",1);render()}
+async function load(){const [i,s,d,rc]=await Promise.all([sb.from("items").select("*"),sb.from("settings").select("*").eq("id",1).single(),sb.from("deals").select("*").order("date",{ascending:false}),sb.from("receipts").select("*").order("uploaded_at")]);
+if(i.error){status("Offline — showing cached copy",0);return render()}C={items:i.data,settings:s.data||C.settings,deals:d.data||[],receipts:rc.data||[]};cache();status("Synced",1);render()}
 let t0;const soon=()=>{clearTimeout(t0);t0=setTimeout(()=>{if(!document.querySelector("dialog[open]")&&!document.activeElement.matches("input,textarea"))load();else soon()},300)};
 sb.channel("live").on("postgres_changes",{event:"*",schema:"public"},soon).subscribe(st=>{if(st=="SUBSCRIBED")$("live").textContent="● Live"});
 render();load();
